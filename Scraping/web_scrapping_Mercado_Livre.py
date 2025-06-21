@@ -1,11 +1,19 @@
 import requests
 from bs4 import BeautifulSoup
-import pandas as pd
+from selenium import webdriver
+
 
 url = "https://lista.mercadolivre.com.br/informatica/portateis-acessorios/notebooks/notebook"
 
+headers = {
+            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36',
+            'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
+            'Accept-Language': 'pt-BR,pt;q=0.9,en;q=0.8',
+            'Connection': 'keep-alive',
+            'Upgrade-Insecure-Requests': '1',
+        }
 
-req = requests.get(url)
+req = requests.get(url, headers=headers)
 soup = BeautifulSoup(req.text, "html.parser")
 
 marca = soup.select('span[class^="poly-component__brand"]')
@@ -17,18 +25,8 @@ preco = soup.select('span[class^="andes-money-amount andes-money-amount--previou
 ##    valor = i.text.split("Avaliação ")[1].split(" de")[0]
 ##    lista.append(valor)
 
-j = 0
-for i in marca:
-    j = j + 1
-
-j_1 = 0
-for i in avaliacao:
-    j_1 = j_1 + 1
-
-j_2 = 0
-for i in preco:
-   j_2 = j_2 + 1 
-
-print(j)
-print(j_1)
-print(j_2)
+print(f"Status da requisição: {req.status_code}")
+print(f"Marcas encontradas: {len(marca)}")
+print(f"Avaliações encontradas: {len(avaliacao)}")
+print(f"Preços encontrados: {len(preco)}")
+print(soup.prettify()[:2000])
