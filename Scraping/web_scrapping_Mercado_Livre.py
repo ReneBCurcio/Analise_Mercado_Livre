@@ -1,7 +1,10 @@
 import requests
 from bs4 import BeautifulSoup
 from selenium import webdriver
-
+from selenium.webdriver.common.by import By
+from selenium.webdriver.common.keys import Keys
+from selenium.webdriver.edge.options import Options
+from selenium.webdriver.support.ui import WebDriverWait
 
 url = "https://lista.mercadolivre.com.br/informatica/portateis-acessorios/notebooks/notebook"
 
@@ -13,20 +16,13 @@ headers = {
             'Upgrade-Insecure-Requests': '1',
         }
 
-req = requests.get(url, headers=headers)
-soup = BeautifulSoup(req.text, "html.parser")
+edge_options = Options()
+edge_options.add_argument('--no-sandbox') ## Para evitar possíveis erros de segurança em servidores Linux/Produção
+edge_options.add_argument('--disable-dev-shm-usage') ## evita compartilhamento da memória de disco e a RAM, visando otimizar o processo
+edge_options.add_argument('--disable-blink-features=AutomationControlled') ## Argumento utilizado para evitar os bloqueos via bot do sistema 
+edge_options.add_experimental_option("excludeSwitches", ["enable-automation"]) ## Argumento utilizado para evitar os bloqueos via bot do sistema 
+edge_options.add_experimental_option('useAutomationExtension', False) ## Argumento utilizado para evitar os bloqueos via bot do sistema 
 
-marca = soup.select('span[class^="poly-component__brand"]')
-avaliacao = soup.select('span[class^="andes-visually-hidden"]')
-preco = soup.select('span[class^="andes-money-amount andes-money-amount--previous andes-money-amount--cents-comma"]')
-## print(i.text.split("Avaliação ")[1].split(" de")[0]) Como extrair o a avaliação
-## lista = []
-##for i in avaliacao:
-##    valor = i.text.split("Avaliação ")[1].split(" de")[0]
-##    lista.append(valor)
+driver = webdriver.Edge(options=edge_options)
+driver.get(url)
 
-print(f"Status da requisição: {req.status_code}")
-print(f"Marcas encontradas: {len(marca)}")
-print(f"Avaliações encontradas: {len(avaliacao)}")
-print(f"Preços encontrados: {len(preco)}")
-print(soup.prettify()[:2000])

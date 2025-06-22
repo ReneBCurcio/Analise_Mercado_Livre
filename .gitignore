@@ -1,0 +1,23 @@
+# Ambientes virtuais
+.venv/
+venv/
+
+# Caches do Python
+__pycache__/
+*.py[cod]
+*.pyo
+
+# Logs
+*.log
+
+# Configurações locais (VSCode, IDEs)
+.vscode/
+.idea/
+
+# Arquivos temporários do sistema
+.DS_Store
+Thumbs.db
+
+
+# Arquivos sensíveis
+.env
