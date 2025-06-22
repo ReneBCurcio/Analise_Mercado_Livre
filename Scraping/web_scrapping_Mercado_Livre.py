@@ -28,9 +28,15 @@ edge_options.add_experimental_option('useAutomationExtension', False) ## Argumen
 
 driver = webdriver.Edge(options=edge_options)
 driver.get(url)
-WebDriverWait(driver, 30).until(
+WebDriverWait(driver, 40).until(
     EC.presence_of_element_located((By.CLASS_NAME,"poly-card__content")))
 time.sleep(random.uniform(2, 4))
 html_content = driver.page_source
 soup = BeautifulSoup(html_content, 'html.parser')
-print(soup)
+produtos = soup.find_all("span", class_="poly-component__brand")
+Nota = soup.find_all("span", class_="poly-reviews__rating")
+Avalicoes = soup.find_all("span", class_="poly-reviews__total")
+Preco = soup.find_all("span", class_="andes-money-amount andes-money-amount--cents-superscript")
+Vendedor = soup.find_all("span", class_="poly-component__seller")
+Item = Vendedor = soup.find_all("span", class_="poly-component__title")
+print(Vendedor)
